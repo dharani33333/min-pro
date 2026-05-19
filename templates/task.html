@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <link rel="stylesheet" href="{% static 'task.css' %}">
+</head>
+<body>
+    <div id="main-container">
+        <div id="Title">
+            <h1>Tasks</h1>
+        </div>
+        <div id="add-task">
+            <form action="" method="post" class="task-form">
+            {% csrf_token %}
+                <input type="text" name="task-name" class="task-name" placeholder="Enter task name" required>
+                <input type="date" name="due-date" class="due-date" required>
+                <button type="submit" class="add-button">Add Task</button>
+            </form>
+        </div>
+        <div id="Task-container">
+            {% for i in task %}
+                <div class="task">
+                    {% if i.is_completed %}
+                    <div class="completed">
+                        <div>
+                            <h3>{{ i.task_name }}</h3>
+                            <p>Due date: {{ i.due_date }}</p>
+                            <span class="status-text">Completed</span>
+                        </div>
+                        <div class="task-actions">
+                            <input type="checkbox" class="Mark-button" value="{{ i.id }}" checked>
+                            <button type="button" class="delete-button" value="{{ i.id }}">Delete</button>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="pending">
+                        <div>
+                            <h3>{{ i.task_name }}</h3>
+                            <p>Due date: {{ i.due_date }}</p>
+                            <span class="status-text">Pending</span>
+                        </div>
+                        <div class="task-actions">
+                            <input type="checkbox" class="Mark-button" value="{{ i.id }}">
+                            <button type="button" class="delete-button" value="{{ i.id }}">Delete</button>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="empty-task">No task added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+<script src="{% static 'task.js' %}"></script>
+</html>
